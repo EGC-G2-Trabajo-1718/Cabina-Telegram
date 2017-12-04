@@ -43,6 +43,16 @@ public class HolaBot extends AbilityBot {
 					  .build();
 	}
 	
+	public Ability exit() {
+		return Ability.builder()
+					  .name("exit")
+					  .info("sale del login")
+					  .locality(ALL)
+					  .privacy(PUBLIC)
+					  .action(ctx -> silent.send("Aún no implementado, disculpe las molestias", ctx.chatId()))
+					  .build();
+	}
+	
 	public Ability playWithMe() {
 	    String message1 = "Dime tu nombre";
 	    String message2 = "Ahora dime tu apellido";
