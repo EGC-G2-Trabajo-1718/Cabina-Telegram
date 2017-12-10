@@ -43,17 +43,7 @@ public class HolaBot extends AbilityBot {
 					  .build();
 	}
 	
-	public Ability exit() {
-		return Ability.builder()
-					  .name("exit")
-					  .info("sale del login")
-					  .locality(ALL)
-					  .privacy(PUBLIC)
-					  .action(ctx -> silent.send("Aún no implementado, disculpe las molestias", ctx.chatId()))
-					  .build();
-	}
-	
-	public Ability playWithMe() {
+	public Ability login() {
 	    String message1 = "Dime tu nombre";
 	    String message2 = "Ahora dime tu apellido";
 	    
@@ -107,7 +97,35 @@ public class HolaBot extends AbilityBot {
 	        )
 	        // You can add more replies by calling .reply(...)
 	        .build();
-	  }
+	}
+	
+
+	public Ability votacionesAbiertas() {
+		String texto = "Las votaciones abiertas son las siguientes:"
+				+ "\r\n- Votación de prueba 1, código:abcd1234"
+				+ "\r\n- Votación de prueba 2, código:abce1284"
+				+ "\r\n- Votación de prueba 3, código:arsq5664"
+				+ "\r\nSi desea ver todas las votaciones haga click en http://congreso.us.es/splc2017/";
+		//TODO: url donde esten directamente las votaciones
+		return Ability.builder()
+					  .name("votacionesAbiertas")
+					  .info("devuelve las votaciones que hay disponibles para votar")
+					  .locality(ALL)
+					  .privacy(PUBLIC)
+					  .action(ctx -> silent.send(texto, ctx.chatId()))
+					  .build();
+	}
+	
+
+	public Ability exit() {
+		return Ability.builder()
+					  .name("exit")
+					  .info("sale del login")
+					  .locality(ALL)
+					  .privacy(PUBLIC)
+					  .action(ctx -> silent.send("Aún no implementado, disculpe las molestias", ctx.chatId()))
+					  .build();
+	}
 	
 	private Predicate<Update> isReplyToMessage(String message) {
       return upd -> {
