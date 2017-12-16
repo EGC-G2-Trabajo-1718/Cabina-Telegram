@@ -6,6 +6,8 @@ import org.telegram.abilitybots.api.objects.Flag;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 
+import functionality.exitFunctionality;
+
 import static org.telegram.abilitybots.api.objects.Locality.ALL;
 import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
 
@@ -132,6 +134,7 @@ public class HolaBot extends AbilityBot {
 				        .reply(upd -> {
 				           
 				            if(upd.getMessage().getText().equalsIgnoreCase("si")) {
+				            	 exitFunctionality.exit();
 				            	 silent.send(close, upd.getMessage().getChatId());
 				            }
 				            else {
