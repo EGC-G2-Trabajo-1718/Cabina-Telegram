@@ -118,13 +118,39 @@ public class HolaBot extends AbilityBot {
 	
 
 	public Ability exit() {
+		
+		String confirmation = "Esto cerrará la sesión actual. ¿Continuar?";
+		String close = "ha cerrado sesión exitosamente";
+		String noClose = "No se ha cerrado la sesión";
+		
 		return Ability.builder()
 					  .name("exit")
 					  .info("sale del login")
 					  .locality(ALL)
 					  .privacy(PUBLIC)
-					  .action(ctx -> silent.send("Aún no implementado, disculpe las molestias", ctx.chatId()))
-					  .build();
+					  .action(ctx -> silent.forceReply(confirmation, ctx.chatId()))
+				        .reply(upd -> {
+				           
+				            if(upd.getMessage().getText().equalsIgnoreCase("si")) {
+				            	 silent.send(close, upd.getMessage().getChatId());
+				            }
+				            else {
+				            	silent.send(noClose, upd.getMessage().getChatId());
+				            }
+				             
+				            },
+				 
+				            Flag.MESSAGE,
+				            
+				            Flag.REPLY,
+				
+				            isReplyToBot()
+				    
+				           
+				            
+				        )
+				        // You can add more replies by calling .reply(...)
+				        .build();
 	}
 	
 	private Predicate<Update> isReplyToMessage(String message) {
