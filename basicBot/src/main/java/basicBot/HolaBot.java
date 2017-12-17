@@ -34,16 +34,6 @@ public class HolaBot extends AbilityBot {
 	public int creatorId() {
 		return 403201590;
 	}
-
-	public Ability sayHello() {
-		return Ability.builder()
-					  .name("hola")
-					  .info("dice hola!")
-					  .locality(ALL)
-					  .privacy(PUBLIC)
-					  .action(ctx -> silent.send("Hola desde el bot de votaciones para EGC grupo 2!", ctx.chatId()))
-					  .build();
-	}
 	
 	public Ability login() {
 	    String message1 = "Dime tu nombre";
