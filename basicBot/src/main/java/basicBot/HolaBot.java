@@ -146,6 +146,41 @@ public class HolaBot extends AbilityBot {
 				        .build();
 	}
 	
+	public Ability votar() {
+		String votacion = "Introduzca la id de la votación que desee:";
+		String pregunta = "Introduzca la id de la pregunta";
+		String respuesta = "Introduzca la id de la respuesta";
+		return Ability.builder()
+					  .name("votar")
+					  .info("Crea y envía un voto")
+					  .locality(ALL)
+					  .privacy(PUBLIC)
+					  .action(ctx -> silent.forceReply(votacion, ctx.chatId()))
+				        .reply(upd -> {
+				           
+				            if(upd.getMessage().getText()) {
+				            	 exitFunctionality.exit();
+				            	 silent.send(close, upd.getMessage().getChatId());
+				            }
+				            else {
+				            	silent.send(noClose, upd.getMessage().getChatId());
+				            }
+				             
+				            },
+				 
+				            Flag.MESSAGE,
+				            
+				            Flag.REPLY,
+				
+				            isReplyToBot()
+				    
+				           
+				            
+				        )
+				        // You can add more replies by calling .reply(...)
+				        .build();
+	}
+	
 	private Predicate<Update> isReplyToMessage(String message) {
       return upd -> {
         Message reply = upd.getMessage().getReplyToMessage();
