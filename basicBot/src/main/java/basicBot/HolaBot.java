@@ -7,6 +7,7 @@ import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 
 import functionality.exitFunctionality;
+import functionality.votarFunctionality;
 
 import static org.telegram.abilitybots.api.objects.Locality.ALL;
 import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
@@ -137,10 +138,7 @@ public class HolaBot extends AbilityBot {
 				            
 				            Flag.REPLY,
 				
-				            isReplyToBot()
-				    
-				           
-				            
+				            isReplyToBot()       
 				        )
 				        // You can add more replies by calling .reply(...)
 				        .build();
@@ -150,6 +148,7 @@ public class HolaBot extends AbilityBot {
 		String votacion = "Introduzca la id de la votación que desee:";
 		String pregunta = "Introduzca la id de la pregunta";
 		String respuesta = "Introduzca la id de la respuesta";
+		String errorVotacion = "Esa votación no existe en el sistema.";
 		return Ability.builder()
 					  .name("votar")
 					  .info("Crea y envía un voto")
@@ -157,25 +156,19 @@ public class HolaBot extends AbilityBot {
 					  .privacy(PUBLIC)
 					  .action(ctx -> silent.forceReply(votacion, ctx.chatId()))
 				        .reply(upd -> {
-				           
-				            if(upd.getMessage().getText()) {
-				            	 exitFunctionality.exit();
-				            	 silent.send(close, upd.getMessage().getChatId());
+				        	Boolean exists = votarFunctionality.comprobarVotaciones(upd.getMessage().getText());
+				            if (exists == true) {
+				            	silent.send(pregunta, upd.getMessage().getChatId());
+				            } else {
+				            	silent.send(errorVotacion, upd.getMessage().getChatId());
 				            }
-				            else {
-				            	silent.send(noClose, upd.getMessage().getChatId());
-				            }
-				             
-				            },
+				         },
 				 
 				            Flag.MESSAGE,
 				            
 				            Flag.REPLY,
 				
 				            isReplyToBot()
-				    
-				           
-				            
 				        )
 				        // You can add more replies by calling .reply(...)
 				        .build();
