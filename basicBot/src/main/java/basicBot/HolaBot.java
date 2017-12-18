@@ -6,6 +6,8 @@ import org.telegram.abilitybots.api.objects.Flag;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 
+import functionality.exitFunctionality;
+
 import static org.telegram.abilitybots.api.objects.Locality.ALL;
 import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
 
@@ -32,28 +34,8 @@ public class HolaBot extends AbilityBot {
 	public int creatorId() {
 		return 403201590;
 	}
-
-	public Ability sayHello() {
-		return Ability.builder()
-					  .name("hola")
-					  .info("dice hola!")
-					  .locality(ALL)
-					  .privacy(PUBLIC)
-					  .action(ctx -> silent.send("Hola desde el bot de votaciones para EGC grupo 2!", ctx.chatId()))
-					  .build();
-	}
 	
-	public Ability exit() {
-		return Ability.builder()
-					  .name("exit")
-					  .info("sale del login")
-					  .locality(ALL)
-					  .privacy(PUBLIC)
-					  .action(ctx -> silent.send("Aún no implementado, disculpe las molestias", ctx.chatId()))
-					  .build();
-	}
-	
-	public Ability playWithMe() {
+	public Ability login() {
 	    String message1 = "Dime tu nombre";
 	    String message2 = "Ahora dime tu apellido";
 	    
@@ -107,7 +89,62 @@ public class HolaBot extends AbilityBot {
 	        )
 	        // You can add more replies by calling .reply(...)
 	        .build();
-	  }
+	}
+	
+
+	public Ability votacionesAbiertas() {
+		String texto = "Las votaciones abiertas son las siguientes:"
+				+ "\r\n- Votación de prueba 1, código:abcd1234"
+				+ "\r\n- Votación de prueba 2, código:abce1284"
+				+ "\r\n- Votación de prueba 3, código:arsq5664"
+				+ "\r\nSi desea ver todas las votaciones haga click en http://congreso.us.es/splc2017/";
+		//TODO: url donde esten directamente las votaciones
+		return Ability.builder()
+					  .name("votacionesAbiertas")
+					  .info("devuelve las votaciones que hay disponibles para votar")
+					  .locality(ALL)
+					  .privacy(PUBLIC)
+					  .action(ctx -> silent.send(texto, ctx.chatId()))
+					  .build();
+	}
+	
+
+	public Ability exit() {
+		
+		String confirmation = "Esto cerrará la sesión actual. ¿Continuar?";
+		String close = "ha cerrado sesión exitosamente";
+		String noClose = "No se ha cerrado la sesión";
+		
+		return Ability.builder()
+					  .name("exit")
+					  .info("sale del login")
+					  .locality(ALL)
+					  .privacy(PUBLIC)
+					  .action(ctx -> silent.forceReply(confirmation, ctx.chatId()))
+				        .reply(upd -> {
+				           
+				            if(upd.getMessage().getText().equalsIgnoreCase("si")) {
+				            	 exitFunctionality.exit();
+				            	 silent.send(close, upd.getMessage().getChatId());
+				            }
+				            else {
+				            	silent.send(noClose, upd.getMessage().getChatId());
+				            }
+				             
+				            },
+				 
+				            Flag.MESSAGE,
+				            
+				            Flag.REPLY,
+				
+				            isReplyToBot()
+				    
+				           
+				            
+				        )
+				        // You can add more replies by calling .reply(...)
+				        .build();
+	}
 	
 	private Predicate<Update> isReplyToMessage(String message) {
       return upd -> {
