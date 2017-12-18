@@ -144,6 +144,7 @@ public class HolaBot extends AbilityBot {
 				        .build();
 	}
 	
+	// Añadido este comando, se cierra Issue #6
 	public Ability votar() {
 		String votacion = "Introduzca la id de la votación que desee:";
 		String pregunta = "Introduzca la id de la pregunta";
