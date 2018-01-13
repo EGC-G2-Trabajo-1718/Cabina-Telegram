@@ -1,6 +1,6 @@
 package functionality;
 
-public class exitFunctionality {
+public class ExitFunctionality {
 	
 	public static void exit() {
 		

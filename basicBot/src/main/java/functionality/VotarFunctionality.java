@@ -5,7 +5,7 @@ import java.util.List;
 
 import objetos.Votacion;
 
-public class votarFunctionality {
+public class VotarFunctionality {
 	
 	public static List<Votacion> votacionesSistema() {
 		List<Votacion> res = new ArrayList<Votacion>();
@@ -20,10 +20,19 @@ public class votarFunctionality {
 		return res;
 	}
 	
-	public static List<String> preguntasDeUnaVotacion(String idVotacion) {
-		List<String> res = new ArrayList<String>();
-		
+	public static String construyeTextoVotacionesDisponibles(){
+		String texto = "Las votaciones son las siguientes:";
+		for (Votacion v : votacionesSistema()) {
+			texto += "\r\n-" + v.getId() + " - " + v.getTitulo();
+		}
+		texto += "Escribe la id de la votacion en la que quieras participar.";
+		return texto;
 	}
+	
+//	public static List<String> preguntasDeUnaVotacion(String idVotacion) {
+//		List<String> res = new ArrayList<String>();
+//		
+//	}
 	
 	public static void votar() {
 		
@@ -32,20 +41,19 @@ public class votarFunctionality {
 		
 	}
 	
-	public static Boolean comprobarVotaciones(String idVotacion) {
+	public static Boolean comprobarVotacion(String idVotacion) {
 		Boolean res = false;
-		List<Integer> lista = votacionesSistema();
-		for (Integer ids : lista) {
-			if (idVotacion.equals(ids)) {
+		for (Votacion v : votacionesSistema()) {
+			if (v.getId().equals(idVotacion)) {
 				res = true;
 			}
 		}
 		return res;
 	}
 	
-	public static Boolean comprobarPreguntasDeVotacion(String idVotacion, String idPregunta) {
-		Boolean res = false;
-		List<String> listaPreguntas = preguntasDeUnaVotacion(idVotacion);
-	}
+//	public static Boolean comprobarPreguntasDeVotacion(String idVotacion, String idPregunta) {
+//		Boolean res = false;
+//		List<String> listaPreguntas = preguntasDeUnaVotacion(idVotacion);
+//	}
 
 }
