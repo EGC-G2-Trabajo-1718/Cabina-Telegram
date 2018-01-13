@@ -44,7 +44,7 @@ public class HolaBot extends AbilityBot {
 
 	public Ability login() {
 		String message1 = "Introduzca su nombre de usuario";
-		String message2 = "Introduzca su contraseña";
+		String message2 = "Introduzca su contrase\u00F1a";
 
 		return Ability.builder().name("login").info("Mensaje con replies").privacy(PUBLIC).locality(ALL).input(0)
 				.action(ctx -> silent.forceReply(message1, ctx.chatId()))
@@ -102,24 +102,24 @@ public class HolaBot extends AbilityBot {
 								LoginFunctionality.comprobarMapa(nombre.toLowerCase(), votacionesHechas);
 								silent.send(
 										"Hola " + nombre
-												+ ", ya esta logueado en el sistema y puede ver las votaciones.",
+												+ ", ya est\u00e1 logueado en el sistema y puede ver las votaciones.",
 										upd.getMessage().getChatId());
 							} else {
 								if (usuarioLogueado.contains(nombre.toLowerCase())) {
 									LoginFunctionality.comprobarMapa(nombre.toLowerCase(), votacionesHechas);
-									silent.send("Lo sentimos, ya estás logueado en el sistema",
+									silent.send("Lo sentimos, ya est\u00e1s logueado en el sistema",
 											upd.getMessage().getChatId());
 								} else {
 									LoginFunctionality.comprobarMapa(nombre.toLowerCase(), votacionesHechas);
 									usuarioLogueado.add(nombre.toLowerCase());
 									silent.send(
 											"Hola " + nombre
-													+ ", ya esta logueado en el sistema y puede ver las votaciones.",
+													+ ", ya est\u00e1 logueado en el sistema y puede ver las votaciones.",
 											upd.getMessage().getChatId());
 								}
 							}
 						} else {
-							silent.send("La contraseña o el nombre de usuario introducidos son erróneos.",
+							silent.send("La contrase\u00F1a o el nombre de usuario introducidos son err\u00f3neos.",
 									upd.getMessage().getChatId());
 						}
 					} catch (NoSuchAlgorithmException e) {
