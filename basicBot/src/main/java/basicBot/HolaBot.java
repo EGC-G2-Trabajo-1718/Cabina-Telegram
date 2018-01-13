@@ -5,13 +5,10 @@ import org.telegram.abilitybots.api.objects.Ability;
 import org.telegram.abilitybots.api.objects.Flag;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
-
 import functionality.exitFunctionality;
 import functionality.votarFunctionality;
-
 import static org.telegram.abilitybots.api.objects.Locality.ALL;
 import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
-
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -25,7 +22,7 @@ public class HolaBot extends AbilityBot {
 /** Token y usuario para el bot de Victor ***/
 //	public static String BOT_TOKEN = "402713141:AAG9jF3NFtLHuWaPALrpO51M4wB2Yg5hYh8";
 //	public static String BOT_USERNAME = "rosa_victor_hola_bot";
-
+	private String usuarioLogueado;
 	
 	public HolaBot() {
 		super(BOT_TOKEN, BOT_USERNAME);
@@ -37,8 +34,8 @@ public class HolaBot extends AbilityBot {
 	}
 	
 	public Ability login() {
-	    String message1 = "Dime tu nombre";
-	    String message2 = "Ahora dime tu apellido";
+	    String message1 = "Introduzca nombre de usuario";
+	    String message2 = "Introduzca su contraseña";
 	    
 	    return Ability.builder()
 	        .name("login")
@@ -148,11 +145,13 @@ public class HolaBot extends AbilityBot {
 	
 	// Añadido este comando, se cierra Issue #6
 	public Ability votar() {
-		String votacion = "Introduzca la id de la votaci\u00f3n que desee:";
-		String pregunta = "Introduzca la id de la pregunta";
-		String respuesta = "Introduzca la id de la respuesta";
+		String votacion = "Introduzca la ID de la votaci\u00f3n que desee:";
+		String pregunta = "Conteste a las siguientes preguntas:";
 		String errorVotacion = "Esa votaci\u00f3n no existe en el sistema.";
-		return Ability.builder()
+		if (usuarioLogueado.isEmpty()) { //Si no hay nadie logueado.
+			return login();
+		} else {
+			return Ability.builder()
 					  .name("votar")
 					  .info("Crea y env\u00eda un voto")
 					  .locality(ALL)
@@ -177,6 +176,7 @@ public class HolaBot extends AbilityBot {
 				        )
 				        // You can add more replies by calling .reply(...)
 				        .build();
+		}
 	}
 	
 	private Predicate<Update> isReplyToMessage(String message) {
