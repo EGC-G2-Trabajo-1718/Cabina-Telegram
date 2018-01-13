@@ -119,7 +119,8 @@ public class HolaBot extends AbilityBot {
 								}
 							}
 						} else {
-							silent.send("La contraseña o el nombre de usuario introducidos son erróneos.", upd.getMessage().getChatId());
+							silent.send("La contraseña o el nombre de usuario introducidos son erróneos.",
+									upd.getMessage().getChatId());
 						}
 					} catch (NoSuchAlgorithmException e) {
 						e.printStackTrace();
@@ -171,34 +172,36 @@ public class HolaBot extends AbilityBot {
 	}
 
 	// Añadido este comando, se cierra Issue #6
-//	public Ability votar() {
-//		String votacion = "Introduzca la ID de la votaci\u00f3n que desee:";
-//		String pregunta = "Conteste a las siguientes preguntas:";
-//		String errorVotacion = "Esa votaci\u00f3n no existe en el sistema.";
-//		if (usuarioLogueado.isEmpty()) { // Si no hay nadie logueado.
-//			return login();
-//		} else {
-//			return Ability.builder().name("votar").info("Crea y env\u00eda un voto").locality(ALL).privacy(PUBLIC)
-//					.action(ctx -> silent.forceReply(votacion, ctx.chatId())).reply(upd -> {
-//						Boolean exists = votarFunctionality.comprobarVotaciones(upd.getMessage().getText());
-//						if (exists == true) {
-//							silent.send(pregunta, upd.getMessage().getChatId());
-//						} else {
-//							silent.send(errorVotacion, upd.getMessage().getChatId());
-//						}
-//					},
-//
-//							Flag.MESSAGE,
-//
-//							Flag.REPLY,
-//
-//							isReplyToBot(),
-//
-//							isReplyToMessage(votacion))
-//					// You can add more replies by calling .reply(...)
-//					.build();
-//		}
-//	}
+	// public Ability votar() {
+	// String votacion = "Introduzca la ID de la votaci\u00f3n que desee:";
+	// String pregunta = "Conteste a las siguientes preguntas:";
+	// String errorVotacion = "Esa votaci\u00f3n no existe en el sistema.";
+	// if (usuarioLogueado.isEmpty()) { // Si no hay nadie logueado.
+	// return login();
+	// } else {
+	// return Ability.builder().name("votar").info("Crea y env\u00eda un
+	// voto").locality(ALL).privacy(PUBLIC)
+	// .action(ctx -> silent.forceReply(votacion, ctx.chatId())).reply(upd -> {
+	// Boolean exists =
+	// votarFunctionality.comprobarVotaciones(upd.getMessage().getText());
+	// if (exists == true) {
+	// silent.send(pregunta, upd.getMessage().getChatId());
+	// } else {
+	// silent.send(errorVotacion, upd.getMessage().getChatId());
+	// }
+	// },
+	//
+	// Flag.MESSAGE,
+	//
+	// Flag.REPLY,
+	//
+	// isReplyToBot(),
+	//
+	// isReplyToMessage(votacion))
+	// // You can add more replies by calling .reply(...)
+	// .build();
+	// }
+	// }
 
 	private Predicate<Update> isReplyToMessage(String message) {
 		return upd -> {
