@@ -14,7 +14,8 @@ public class votarFunctionality {
 	}
 	
 	public static List<String> preguntasDeUnaVotacion(String idVotacion) {
-		List<String> res = new ArrayList<String>();		
+		List<String> res = new ArrayList<String>();
+		
 	}
 	
 	public static void votar() {
