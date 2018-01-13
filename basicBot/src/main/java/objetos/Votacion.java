@@ -3,31 +3,31 @@ package objetos;
 import java.util.Arrays;
 import java.util.List;
 
-public class votacion {
+public class Votacion {
 	
-	public String id;
-	public Long titulo;
+	public Long id;
+	public String titulo;
 	public List<String> preguntas;
 	
-	public votacion(String id, Long titulo, String... preguntas){
+	public Votacion(Long id, String titulo, String... preguntas){
 		this.id = id;
 		this.titulo = titulo;
 		this.preguntas = Arrays.asList(preguntas);
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Long getTitulo() {
+	public String getTitulo() {
 		return titulo;
 	}
 
-	public void setTitulo(Long titulo) {
+	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
 
