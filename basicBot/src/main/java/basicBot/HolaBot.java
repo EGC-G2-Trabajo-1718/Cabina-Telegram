@@ -17,7 +17,6 @@ import org.telegram.telegrambots.api.objects.Update;
 
 
 import functionality.LoginFunctionality;
-import functionality.exitFunctionality;
 
 import functionality.ExitFunctionality;
 import functionality.VotarFunctionality;
@@ -170,12 +169,12 @@ public class HolaBot extends AbilityBot {
 					if (usuarioLogueado == null || usuarioLogueado.isEmpty()) {
 						usuarioLogueado = new ArrayList<String>();
 					}
-					if (exitFunctionality.comprobarUsuario(usuarioLogueado, nombre.toLowerCase()) == false) {
+					if (ExitFunctionality.comprobarUsuario(usuarioLogueado, nombre.toLowerCase()) == false) {
 						silent.send(noLogin, upd.getMessage().getChatId());
 					} else {
 						if (upd.getMessage().getText().equalsIgnoreCase("si")
-								&& exitFunctionality.comprobarUsuario(usuarioLogueado, nombre.toLowerCase())) {
-							exitFunctionality.exit(usuarioLogueado, nombre.toLowerCase());
+								&& ExitFunctionality.comprobarUsuario(usuarioLogueado, nombre.toLowerCase())) {
+							ExitFunctionality.exit(usuarioLogueado, nombre.toLowerCase());
 							silent.send(close, upd.getMessage().getChatId());
 						} else {
 							silent.send(noClose, upd.getMessage().getChatId());
