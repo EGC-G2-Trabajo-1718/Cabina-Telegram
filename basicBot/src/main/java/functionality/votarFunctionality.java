@@ -13,6 +13,10 @@ public class votarFunctionality {
 		return res;
 	}
 	
+	public static List<String> preguntasDeUnaVotacion(String idVotacion) {
+		List<String> res = new ArrayList<String>();		
+	}
+	
 	public static void votar() {
 		
 		// Método que enviará un voto, pasando el id de votación, la pregunta y la respuesta.
@@ -29,6 +33,11 @@ public class votarFunctionality {
 			}
 		}
 		return res;
+	}
+	
+	public static Boolean comprobarPreguntasDeVotacion(String idVotacion, String idPregunta) {
+		Boolean res = false;
+		List<String> listaPreguntas = preguntasDeUnaVotacion(idVotacion);
 	}
 
 }
