@@ -9,6 +9,10 @@ import functionality.exitFunctionality;
 import functionality.votarFunctionality;
 import static org.telegram.abilitybots.api.objects.Locality.ALL;
 import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -22,7 +26,8 @@ public class HolaBot extends AbilityBot {
 /** Token y usuario para el bot de Victor ***/
 //	public static String BOT_TOKEN = "402713141:AAG9jF3NFtLHuWaPALrpO51M4wB2Yg5hYh8";
 //	public static String BOT_USERNAME = "rosa_victor_hola_bot";
-	private String usuarioLogueado;
+	private List<String> usuarioLogueado;
+	private Map<String, List<String>> votacionesHechas;
 	
 	public HolaBot() {
 		super(BOT_TOKEN, BOT_USERNAME);
@@ -34,7 +39,7 @@ public class HolaBot extends AbilityBot {
 	}
 	
 	public Ability login() {
-	    String message1 = "Introduzca nombre de usuario";
+	    String message1 = "Introduzca su nombre de usuario";
 	    String message2 = "Introduzca su contraseña";
 	    
 	    return Ability.builder()
@@ -78,7 +83,21 @@ public class HolaBot extends AbilityBot {
 	        	  Map<String, String> nombreMap = db.getMap("Nombres");
 	              String chatId = upd.getMessage().getChatId()+"";
 	              String nombre = nombreMap.get(chatId);
-	              silent.send("Hola "+ nombre +" "+upd.getMessage().getText(), upd.getMessage().getChatId());
+	              if(usuarioLogueado == null){
+	            	  usuarioLogueado = new ArrayList<String>();
+	            	  usuarioLogueado.add(nombre);
+	            	  comprobarMapa(nombre);
+	            	  silent.send("Hola "+ nombre +" "+upd.getMessage().getText(), upd.getMessage().getChatId());
+	              } else {
+	            	  if(usuarioLogueado.contains(nombre)){
+		            	  comprobarMapa(nombre);
+		            	  silent.send("Ya estás logueado en el sistema", upd.getMessage().getChatId());
+		              } else {
+		            	  comprobarMapa(nombre);
+		            	  usuarioLogueado.add(nombre);
+		            	  silent.send("Hola "+ nombre +" "+upd.getMessage().getText(), upd.getMessage().getChatId());
+		              }
+	              } 
 	            },
 	            Flag.MESSAGE,
 	            Flag.REPLY,
@@ -89,6 +108,19 @@ public class HolaBot extends AbilityBot {
 	        .build();
 	}
 	
+
+	private void comprobarMapa(String nombre) {
+		if(votacionesHechas == null){
+			votacionesHechas = new HashMap<>();
+			List<String> listaVotaciones = new ArrayList<>();
+			votacionesHechas.put(nombre, listaVotaciones);
+		} else {
+			if(votacionesHechas.get(nombre) == null){
+				List<String> listaVotaciones = new ArrayList<>();
+				votacionesHechas.put(nombre, listaVotaciones);
+			}
+		}
+	}
 
 	public Ability votacionesAbiertas() {
 		String texto = "Las votaciones abiertas son las siguientes:"
