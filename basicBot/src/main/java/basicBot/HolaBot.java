@@ -18,6 +18,7 @@ import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 
 import functionality.exitFunctionality;
+import functionality.LoginFunctionality;
 
 public class HolaBot extends AbilityBot {
 
@@ -94,22 +95,22 @@ public class HolaBot extends AbilityBot {
 					String chatId = upd.getMessage().getChatId() + "";
 					String nombre = nombreMap.get(chatId);
 					try {
-						if (comprobarContrasena(nombre, upd.getMessage().getText())) {
+						if (LoginFunctionality.comprobarContrasena(nombre, upd.getMessage().getText())) {
 							if (usuarioLogueado == null) {
 								usuarioLogueado = new ArrayList<String>();
 								usuarioLogueado.add(nombre.toLowerCase());
-								comprobarMapa(nombre.toLowerCase());
+								LoginFunctionality.comprobarMapa(nombre.toLowerCase(), votacionesHechas);
 								silent.send(
 										"Hola " + nombre
 												+ ", ya esta logueado en el sistema y puede ver las votaciones.",
 										upd.getMessage().getChatId());
 							} else {
 								if (usuarioLogueado.contains(nombre.toLowerCase())) {
-									comprobarMapa(nombre.toLowerCase());
+									LoginFunctionality.comprobarMapa(nombre.toLowerCase(), votacionesHechas);
 									silent.send("Lo sentimos, ya estás logueado en el sistema",
 											upd.getMessage().getChatId());
 								} else {
-									comprobarMapa(nombre.toLowerCase());
+									LoginFunctionality.comprobarMapa(nombre.toLowerCase(), votacionesHechas);
 									usuarioLogueado.add(nombre.toLowerCase());
 									silent.send(
 											"Hola " + nombre
@@ -118,7 +119,7 @@ public class HolaBot extends AbilityBot {
 								}
 							}
 						} else {
-							silent.send("La contraseña que has introducido es errónea.", upd.getMessage().getChatId());
+							silent.send("La contraseña o el nombre de usuario introducidos son erróneos.", upd.getMessage().getChatId());
 						}
 					} catch (NoSuchAlgorithmException e) {
 						e.printStackTrace();
@@ -126,44 +127,6 @@ public class HolaBot extends AbilityBot {
 				}, Flag.MESSAGE, Flag.REPLY, isReplyToBot(), isReplyToMessage(message2))
 				// You can add more replies by calling .reply(...)
 				.build();
-	}
-
-	// Se comprueba que la contraseña introducida sea correcta
-	private boolean comprobarContrasena(String nombre, String text) throws NoSuchAlgorithmException {
-		boolean res = false;
-		MessageDigest md = MessageDigest.getInstance("MD5");
-		byte[] hash = md.digest(text.getBytes());
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < hash.length; i++) {
-			sb.append(Integer.toString((hash[i] & 0xff) + 0x100, 16).substring(1));
-		}
-		String contrasenaAProbar = sb.toString();
-
-		Map<String, String> contrasenas = new HashMap<String, String>();
-		contrasenas.put("alberto", "4d186321c1a7f0f354b297e8914ab240");
-		contrasenas.put("alejandro", "4d186321c1a7f0f354b297e8914ab240");
-		contrasenas.put("victor", "4d186321c1a7f0f354b297e8914ab240");
-		contrasenas.put("daniel", "6e6e2ddb6346ce143d19d79b3358c16a");
-		contrasenas.put("julio", "6e6e2ddb6346ce143d19d79b3358c16a");
-		if (contrasenas.get(nombre.toLowerCase()).equals(contrasenaAProbar)) {
-			res = true;
-		}
-		return res;
-	}
-
-	// Se comprueba que el mapa de votaciones esté creado y si no se crea,
-	// además de añadir al usuario logueado.
-	private void comprobarMapa(String nombre) {
-		if (votacionesHechas == null) {
-			votacionesHechas = new HashMap<>();
-			List<String> listaVotaciones = new ArrayList<>();
-			votacionesHechas.put(nombre, listaVotaciones);
-		} else {
-			if (votacionesHechas.get(nombre) == null) {
-				List<String> listaVotaciones = new ArrayList<>();
-				votacionesHechas.put(nombre, listaVotaciones);
-			}
-		}
 	}
 
 	public Ability votacionesAbiertas() {
@@ -208,34 +171,34 @@ public class HolaBot extends AbilityBot {
 	}
 
 	// Añadido este comando, se cierra Issue #6
-	public Ability votar() {
-		String votacion = "Introduzca la ID de la votaci\u00f3n que desee:";
-		String pregunta = "Conteste a las siguientes preguntas:";
-		String errorVotacion = "Esa votaci\u00f3n no existe en el sistema.";
-		if (usuarioLogueado.isEmpty()) { // Si no hay nadie logueado.
-			return login();
-		} else {
-			return Ability.builder().name("votar").info("Crea y env\u00eda un voto").locality(ALL).privacy(PUBLIC)
-					.action(ctx -> silent.forceReply(votacion, ctx.chatId())).reply(upd -> {
-						Boolean exists = votarFunctionality.comprobarVotaciones(upd.getMessage().getText());
-						if (exists == true) {
-							silent.send(pregunta, upd.getMessage().getChatId());
-						} else {
-							silent.send(errorVotacion, upd.getMessage().getChatId());
-						}
-					},
-
-							Flag.MESSAGE,
-
-							Flag.REPLY,
-
-							isReplyToBot(),
-
-							isReplyToMessage(votacion))
-					// You can add more replies by calling .reply(...)
-					.build();
-		}
-	}
+//	public Ability votar() {
+//		String votacion = "Introduzca la ID de la votaci\u00f3n que desee:";
+//		String pregunta = "Conteste a las siguientes preguntas:";
+//		String errorVotacion = "Esa votaci\u00f3n no existe en el sistema.";
+//		if (usuarioLogueado.isEmpty()) { // Si no hay nadie logueado.
+//			return login();
+//		} else {
+//			return Ability.builder().name("votar").info("Crea y env\u00eda un voto").locality(ALL).privacy(PUBLIC)
+//					.action(ctx -> silent.forceReply(votacion, ctx.chatId())).reply(upd -> {
+//						Boolean exists = votarFunctionality.comprobarVotaciones(upd.getMessage().getText());
+//						if (exists == true) {
+//							silent.send(pregunta, upd.getMessage().getChatId());
+//						} else {
+//							silent.send(errorVotacion, upd.getMessage().getChatId());
+//						}
+//					},
+//
+//							Flag.MESSAGE,
+//
+//							Flag.REPLY,
+//
+//							isReplyToBot(),
+//
+//							isReplyToMessage(votacion))
+//					// You can add more replies by calling .reply(...)
+//					.build();
+//		}
+//	}
 
 	private Predicate<Update> isReplyToMessage(String message) {
 		return upd -> {
