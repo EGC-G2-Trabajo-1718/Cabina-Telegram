@@ -6,10 +6,10 @@ import java.util.List;
 import objetos.Votacion;
 
 public class VotarFunctionality {
-	
+
 	public static List<Votacion> votacionesSistema() {
 		List<Votacion> res = new ArrayList<Votacion>();
-		Votacion a1 = new Votacion(1l, "Titulo 1", "pregunta 1"); 
+		Votacion a1 = new Votacion(1l, "Titulo 1", "pregunta 1");
 		Votacion a2 = new Votacion(2l, "Titulo 2", "pregunta 1", "pregunta 2");
 		Votacion a3 = new Votacion(3l, "Titulo 3", "pregunta 1", "pregunta 2", "pregunta 3");
 		Votacion a4 = new Votacion(4l, "Titulo 4", "pregunta 1", "pregunta 2", "pregunta 3", "pregunta 4");
@@ -19,41 +19,53 @@ public class VotarFunctionality {
 		res.add(a4);
 		return res;
 	}
-	
-	public static String construyeTextoVotacionesDisponibles(){
-		String texto = "Las votaciones son las siguientes:";
+
+	public static String construyeTextoVotacionesDisponibles() {
+		String texto = "Las votaciones actuales del sistema son las siguientes:";
 		for (Votacion v : votacionesSistema()) {
-			texto += "\r\n-" + v.getId() + " - " + v.getTitulo();
+			texto += System.lineSeparator() + "Id: " + v.getId() + " - " + v.getTitulo();
 		}
-		texto += "Escribe la id de la votacion en la que quieras participar.";
+		texto += System.lineSeparator() + "Escribe la Id de la votacion en la que quieras participar.";
 		return texto;
 	}
-	
-//	public static List<String> preguntasDeUnaVotacion(String idVotacion) {
-//		List<String> res = new ArrayList<String>();
-//		
-//	}
-	
-	public static void votar() {
-		
-		// Método que enviará un voto, pasando el id de votación, la pregunta y la respuesta.
-		// Se necesita la API del subsistema de cabina de votaciones
-		
-	}
-	
+
+	// Devuelve TRUE si la votacion existe en el sistema tras meterle una ID.
 	public static Boolean comprobarVotacion(String idVotacion) {
 		Boolean res = false;
 		for (Votacion v : votacionesSistema()) {
 			if (v.getId().equals(idVotacion)) {
 				res = true;
+				break;
 			}
 		}
 		return res;
 	}
+
+	// Devuelve las preguntas especificas de una votacion dada.
+	public static List<String> preguntasDeVotacion(String idVotacion) {
+		List<String> preguntas = new ArrayList<String>();
+		Votacion votacion;
+		for (Votacion v : votacionesSistema()) {
+			if (v.getId().equals(Long.parseLong(idVotacion))) {
+				votacion = v;
+				preguntas = votacion.getPreguntas();
+			}
+		}
+		return preguntas;
+	}
 	
-//	public static Boolean comprobarPreguntasDeVotacion(String idVotacion, String idPregunta) {
-//		Boolean res = false;
-//		List<String> listaPreguntas = preguntasDeUnaVotacion(idVotacion);
-//	}
+	public static String construyeTextoPreguntasVotacion(String idVotacion) {
+		String texto = "Conteste a las siguientes preguntas:";
+		List<String> preguntas = preguntasDeVotacion(idVotacion);
+		Integer contador = preguntas.size();
+		for (String p : preguntas) {
+			texto += "\r\n" + p;
+			contador = contador - 1;
+			if (contador == 0) {
+				return texto;
+			}
+		}
+		return texto;
+	}
 
 }

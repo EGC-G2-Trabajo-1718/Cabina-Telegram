@@ -11,6 +11,8 @@ import objetos.Votacion;
 import functionality.*;
 import static org.telegram.abilitybots.api.objects.Locality.ALL;
 import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
+
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -133,17 +135,31 @@ public class HolaBot extends AbilityBot {
 	}
 
 	public Ability votar() {
-		return Ability.builder().name("votar")
-				.info("devuelve las votaciones que hay disponibles para votar y te permite votar").locality(ALL).privacy(PUBLIC)
-				.action(ctx -> silent.send(VotarFunctionality.construyeTextoVotacionesDisponibles(), ctx.chatId())).build();
-//				.reply(upd -> {
-//					if (upd.getMessage().getText().equalsIgnoreCase("si")) {
-//						ExitFunctionality.exit();
-//						silent.send(close, upd.getMessage().getChatId());
-//					} else {
-//						silent.send(noClose, upd.getMessage().getChatId());
+		String textoVotar = VotarFunctionality.construyeTextoVotacionesDisponibles();
+		
+		return Ability.builder().name("votar").info("devuelve las votaciones que hay disponibles para votar y te permite votar").privacy(PUBLIC).locality(ALL).input(0)
+				.action(ctx -> silent.forceReply(textoVotar, ctx.chatId()))
+				.reply(upd -> {
+					silent.send("prueba", upd.getMessage().getChatId());
+//					List<String> preguntas = VotarFunctionality.preguntasDeVotacion(upd.getMessage().getText());
+//					
+//
+//					for(String pregunta : preguntas){
+//						silent.forceReply(pregunta, upd.getMessage().getChatId());
 //					}
-//				},
+				},
+						
+						Flag.MESSAGE,
+						
+						Flag.REPLY,
+						
+						isReplyToBot(),
+						
+						isReplyToMessage(textoVotar))
+				
+				.build();
+		
+		
 	}
 
 	private Predicate<Update> isReplyToMessage(String message) {
