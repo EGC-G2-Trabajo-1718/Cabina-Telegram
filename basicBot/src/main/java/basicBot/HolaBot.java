@@ -52,7 +52,7 @@ public class HolaBot extends AbilityBot {
 	        // The reason of that is that a reply can be so versatile depending on the message, context becomes an inefficient wrapping
 	        .reply(upd -> {
 	              // Prints to console
-	              System.out.println("I'm in a reply!");
+	              //System.out.println("I'm in a reply!");
 	              
 	              //llama al mapa de db y le introduce la respuesta del usuario con la clave de la id del chat
 	              Map<String, String> nombreMap = db.getMap("Nombres");
@@ -95,9 +95,9 @@ public class HolaBot extends AbilityBot {
 
 	public Ability votacionesAbiertas() {
 		String texto = "Las votaciones abiertas son las siguientes:"
-				+ "\r\n- Votación de prueba 1, código:abcd1234"
-				+ "\r\n- Votación de prueba 2, código:abce1284"
-				+ "\r\n- Votación de prueba 3, código:arsq5664"
+				+ "\r\n- Votaci\u00f3n de prueba 1, c\u00f3digo:abcd1234"
+				+ "\r\n- Votaci\u00f3n de prueba 2, c\u00f3digo:abce1284"
+				+ "\r\n- Votaci\u00f3n de prueba 3, c\u00f3digo:arsq5664"
 				+ "\r\nSi desea ver todas las votaciones haga click en http://congreso.us.es/splc2017/";
 		//TODO: url donde esten directamente las votaciones
 		return Ability.builder()
@@ -112,9 +112,9 @@ public class HolaBot extends AbilityBot {
 
 	public Ability exit() {
 		
-		String confirmation = "Esto cerrará la sesión actual. ¿Continuar?";
-		String close = "ha cerrado sesión exitosamente";
-		String noClose = "No se ha cerrado la sesión";
+		String confirmation = "Esto cerrar\u00e1 la sesi\u00f3n actual. ¿Continuar?";
+		String close = "Se ha cerrado sesi\u00f3n exitosamente";
+		String noClose = "No se ha cerrado la sesi\u00f3n";
 		
 		return Ability.builder()
 					  .name("exit")
@@ -138,20 +138,23 @@ public class HolaBot extends AbilityBot {
 				            
 				            Flag.REPLY,
 				
-				            isReplyToBot()       
+				            isReplyToBot(),
+				            
+				            isReplyToMessage(confirmation)
 				        )
 				        // You can add more replies by calling .reply(...)
 				        .build();
 	}
 	
+	// Añadido este comando, se cierra Issue #6
 	public Ability votar() {
-		String votacion = "Introduzca la id de la votación que desee:";
+		String votacion = "Introduzca la id de la votaci\u00f3n que desee:";
 		String pregunta = "Introduzca la id de la pregunta";
 		String respuesta = "Introduzca la id de la respuesta";
-		String errorVotacion = "Esa votación no existe en el sistema.";
+		String errorVotacion = "Esa votaci\u00f3n no existe en el sistema.";
 		return Ability.builder()
 					  .name("votar")
-					  .info("Crea y envía un voto")
+					  .info("Crea y env\u00eda un voto")
 					  .locality(ALL)
 					  .privacy(PUBLIC)
 					  .action(ctx -> silent.forceReply(votacion, ctx.chatId()))
@@ -168,7 +171,9 @@ public class HolaBot extends AbilityBot {
 				            
 				            Flag.REPLY,
 				
-				            isReplyToBot()
+				            isReplyToBot(),
+				            
+				            isReplyToMessage(votacion)
 				        )
 				        // You can add more replies by calling .reply(...)
 				        .build();
