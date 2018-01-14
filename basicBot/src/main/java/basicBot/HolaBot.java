@@ -151,7 +151,7 @@ public class HolaBot extends AbilityBot {
 
 	public Ability exit() {
 
-		String confirmation = "Esto cerrar\u00e1 la sesi\u00f3n actual. ¿Continuar?";
+		String confirmation = "Esto cerrar\u00e1 la sesi\u00f3n actual. Continuar?";
 		String close = "Se ha cerrado sesi\u00f3n exitosamente";
 		String noClose = "No se ha cerrado la sesi\u00f3n";
 		String noLogin = "Usted no se encuentra logueado en el sistema, por lo que no es necesario desloguearse. Escriba /login para poder votar";
