@@ -15,19 +15,9 @@ import org.telegram.abilitybots.api.objects.Flag;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 
-
-import functionality.LoginFunctionality;
-
 import functionality.ExitFunctionality;
+import functionality.LoginFunctionality;
 import functionality.VotarFunctionality;
-import objetos.Votacion;
-import functionality.*;
-import static org.telegram.abilitybots.api.objects.Locality.ALL;
-import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
-
-import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
 
 
 public class HolaBot extends AbilityBot {
