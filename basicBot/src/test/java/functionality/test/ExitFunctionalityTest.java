@@ -7,8 +7,6 @@ import functionality.ExitFunctionality;
 
 
 
-
-
 public class ExitFunctionalityTest {
 
 	@Test
@@ -19,6 +17,8 @@ public class ExitFunctionalityTest {
 		
 		assertTrue(!usuarios.contains("Victor"));
 	}
+	
+	
 	
 	@Test
 	public void comprobarUsuarioTest(){
