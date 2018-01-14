@@ -11,7 +11,6 @@ import functionality.ExitFunctionality;
 
 public class ExitFunctionalityTest {
 
-	
 	@Test
 	public void exitTest(){
 		ArrayList<String> usuarios = new ArrayList<String>();
@@ -21,5 +20,11 @@ public class ExitFunctionalityTest {
 		assertTrue(!usuarios.contains("Victor"));
 	}
 	
-	
+	@Test
+	public void comprobarUsuarioTest(){
+		ArrayList<String> usuarios = new ArrayList<String>();
+		usuarios.add("Victor");
+		
+		assertTrue(ExitFunctionality.comprobarUsuario(usuarios, "Victor"));
+	}
 }
