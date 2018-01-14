@@ -5,7 +5,7 @@ import java.util.List;
 public class ExitFunctionality {
 
 	public static void exit(List<String> usuariosLogueados, String usuario) {
-		// MÈtodo que se ejecutar· cuando se de la orden de salir del sistema.
+		// M√©todo que se ejecutar√° cuando se de la orden de salir del sistema.
 		usuariosLogueados.remove(usuario);
 	}
 

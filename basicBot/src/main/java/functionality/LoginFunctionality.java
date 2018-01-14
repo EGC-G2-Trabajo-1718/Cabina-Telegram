@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class LoginFunctionality {
 
-	// Se comprueba que la contraseÒa introducida sea correcta
+	// Se comprueba que la contrase√±a introducida sea correcta
 	public static boolean comprobarContrasena(String nombre, String text) throws NoSuchAlgorithmException {
 		boolean res = false;
 		MessageDigest md = MessageDigest.getInstance("MD5");
@@ -32,8 +32,8 @@ public class LoginFunctionality {
 		return res;
 	}
 
-	// Se comprueba que el mapa de votaciones estÈ creado y si no se crea,
-	// adem·s de aÒadir al usuario logueado.
+	// Se comprueba que el mapa de votaciones est√° creado y si no se crea,
+	// adem√°s de a√±adir al usuario logueado.
 	public static void comprobarMapa(String nombre, Map<String, List<String>> votacionesHechas) {
 		if (votacionesHechas == null) {
 			votacionesHechas = new HashMap<>();

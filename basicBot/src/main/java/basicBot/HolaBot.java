@@ -98,10 +98,10 @@ public class HolaBot extends AbilityBot {
 						// The reply is to the playMessage
 						isReplyToMessage(message1))
 				.reply(upd -> {
-					// Se comprueba si están iniciadas las colecciones
+					// Se comprueba si estÃ¡n iniciadas las colecciones
 					// necesarioas para el funcionamiento del sistema, y en caso
 					// negativo
-					// se crean. Además, se comprueba que la contraseña sea
+					// se crean. AdemÃ¡s, se comprueba que la contraseÃ±a sea
 					// correcta para el usuario indicado.
 					Map<String, String> nombreMap = db.getMap("Nombres");
 					String chatId = upd.getMessage().getChatId() + "";
@@ -156,7 +156,7 @@ public class HolaBot extends AbilityBot {
 
 	public Ability exit() {
 
-		String confirmation = "Esto cerrar\u00e1 la sesi\u00f3n actual. ¿Continuar?";
+		String confirmation = "Esto cerrar\u00e1 la sesi\u00f3n actual. ï¿½Continuar?";
 		String close = "Se ha cerrado sesi\u00f3n exitosamente";
 		String noClose = "No se ha cerrado la sesi\u00f3n";
 		String noLogin = "Usted no se encuentra logueado en el sistema, por lo que no es necesario desloguearse. Escriba /login para poder votar";
