@@ -72,7 +72,7 @@ public class HolaBot extends AbilityBot {
 						nombreMap.remove(chatId);
 					}
 					if (nombreMap.get(chatId) != null) {
-						silent.forceReply("Ya se encuentra logueado en el sistema como usuario " + nombreMap.get(chatId)
+						silent.send("Ya se encuentra logueado en el sistema como usuario " + nombreMap.get(chatId)
 								+ ", utilice el comando /votar", upd.getMessage().getChatId());
 						try {
 							List<String> error = new ArrayList<String>();
@@ -81,7 +81,7 @@ public class HolaBot extends AbilityBot {
 
 						}
 					} else {
-						nombreMap.put(chatId, upd.getMessage().getText());
+						nombreMap.put(chatId, upd.getMessage().getText().toLowerCase());
 
 						// Sends message
 						silent.forceReply(message2, upd.getMessage().getChatId());
@@ -218,7 +218,7 @@ public class HolaBot extends AbilityBot {
 
 							silent.forceReply(pregunta, upd.getMessage().getChatId());
 						} else {
-							silent.forceReply(
+							silent.send(
 									"No se encuentra logueado en el sistema, por favor utilice el comando /login para poder votar",
 									upd.getMessage().getChatId());
 						}
