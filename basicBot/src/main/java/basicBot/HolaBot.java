@@ -151,7 +151,7 @@ public class HolaBot extends AbilityBot {
 
 	public Ability exit() {
 
-		String confirmation = "Esto cerrar\u00e1 la sesi\u00f3n actual. ï¿½Continuar?";
+		String confirmation = "Esto cerrar\u00e1 la sesi\u00f3n actual. ¿Continuar?";
 		String close = "Se ha cerrado sesi\u00f3n exitosamente";
 		String noClose = "No se ha cerrado la sesi\u00f3n";
 		String noLogin = "Usted no se encuentra logueado en el sistema, por lo que no es necesario desloguearse. Escriba /login para poder votar";
@@ -191,22 +191,60 @@ public class HolaBot extends AbilityBot {
 		String textoVotar = VotarFunctionality.construyeTextoVotacionesDisponibles();
 		String votacionErronea = "Votacion erronea, por favor intentelo mas tarde";
 		String finVotacion = "Han acabado las preguntas, gracias por su participacion";
-					System.out.println("hola");
+
+		return Ability.builder().name("votar")
+				.info("devuelve las votaciones que hay disponibles para votar y te permite votar").privacy(PUBLIC)
+				.locality(ALL).action(ctx -> silent.forceReply(textoVotar, ctx.chatId())).reply(upd -> {
 					String idVotacion = upd.getMessage().getText();
+					if (VotarFunctionality.comprobarVotacion(idVotacion)) {
+						Map<String, String> nombreMap = db.getMap("Nombres");
+						String chat = upd.getMessage().getChatId() + "";
+						String nombre = nombreMap.get(chat);
+						if (usuarioLogueado == null || usuarioLogueado.isEmpty()) {
+							usuarioLogueado = new ArrayList<String>();
+						}
+
+						if (usuarioLogueado.contains(nombre)) {
+							Map<String, List<String>> votacionesMap = db.getMap("Votaciones");
+							String chatId = upd.getMessage().getChatId() + "";
+							List<String> preguntas = new ArrayList<String>(
+									VotarFunctionality.preguntasDeVotacion(idVotacion));
+
+							Map<String, String> preguntaMap = db.getMap("Pregunta");
+							String pregunta = preguntas.get(0);
+							preguntas.remove(0);
+							votacionesMap.put(chatId, preguntas);
+							preguntaMap.put(chatId, pregunta);
+
+							silent.forceReply(pregunta, upd.getMessage().getChatId());
+						} else {
+							silent.forceReply(
+									"No se encuentra logueado en el sistema, por favor utilice el comando /login para poder votar",
+									upd.getMessage().getChatId());
+						}
 					} else {
 						silent.send(votacionErronea, upd.getMessage().getChatId());
 					}
+				}, Flag.MESSAGE, Flag.REPLY, isReplyToBot(), isReplyToMessage(textoVotar)).reply(upd -> {
 					Map<String, List<String>> votacionesMap = db.getMap("Votaciones");
 					String chatId = upd.getMessage().getChatId() + "";
 					List<String> preguntas = votacionesMap.get(chatId);
+
+					if (preguntas.size() > 0) {
+
 						String pregunta = preguntas.get(0);
 						preguntas.remove(0);
+
 						Map<String, String> preguntaMap = db.getMap("Pregunta");
+
+						votacionesMap.put(chatId, preguntas);
 						preguntaMap.put(chatId, pregunta);
+
 						silent.forceReply(pregunta, upd.getMessage().getChatId());
 					} else {
 						silent.send(finVotacion, upd.getMessage().getChatId());
 					}
+				}, Flag.MESSAGE, Flag.REPLY, isReplyToBot(), isReplyToQuestion()).build();
 	}
 
 	private Predicate<Update> isReplyToMessage(String message) {
@@ -215,6 +253,7 @@ public class HolaBot extends AbilityBot {
 			return reply.hasText() && reply.getText().equalsIgnoreCase(message);
 		};
 	}
+
 	private Predicate<Update> isReplyToQuestion() {
 		return upd -> {
 			Map<String, String> preguntaMap = db.getMap("Pregunta");
