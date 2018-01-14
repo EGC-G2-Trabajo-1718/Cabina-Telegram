@@ -4,5 +4,4 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_d4dfddbc6378_key -iv $encrypted_d4dfddbc6378_iv -in deploy.enc -out deploy -d
 
 script:
-  - cd basicBot
   - mvn clean verify
