@@ -19,14 +19,6 @@ public class VotarFunctionality {
 		res.add(a4);
 		return res;
 	}
-
-	public static String textVotacionesAbiertas() {
-		String texto = "Las votaciones actuales del sistema son las siguientes:";
-		for (Votacion v : votacionesSistema()) {
-			texto += System.lineSeparator() + "Id: " + v.getId() + " - " + v.getTitulo();
-		}
-		return texto;
-	}
 	
 	public static String construyeTextoVotacionesDisponibles() {
 		String texto = "Las votaciones actuales del sistema son las siguientes:";
@@ -48,7 +40,7 @@ public class VotarFunctionality {
 				}
 			}		
 		}catch (Exception e) {
-			//necesario para que responda cuando introduces algo que no es un id
+			// necesario para que responda cuando introduces algo que no es un id
 		}
 		return res;
 	}

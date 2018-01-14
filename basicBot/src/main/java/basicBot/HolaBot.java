@@ -160,14 +160,7 @@ public class HolaBot extends AbilityBot {
 					}
 				}, Flag.MESSAGE, Flag.REPLY, isReplyToBot(), isReplyToMessage(confirmation)).build();
 	}
-
-	public Ability votacionesAbiertas() {
-		String texto = VotarFunctionality.construyeTextoVotacionesDisponibles();
-		return Ability.builder().name("votacionesAbiertas").info("devuelve las votaciones que hay disponibles para votar").locality(ALL).privacy(PUBLIC)
-				.action(ctx -> silent.send(texto, ctx.chatId())).build();
-	}
 	
-	// Se quiere hacer: Pregunta1 -> Respuesta1 ; Pregunta2 -> Respuesta2 ...
 	public Ability votar() {
 		String textoVotar = VotarFunctionality.construyeTextoVotacionesDisponibles();
 		String votacionErronea = "Votacion erronea, por favor intentelo mas tarde";
@@ -214,8 +207,7 @@ public class HolaBot extends AbilityBot {
 					} else {
 						silent.send(finVotacion, upd.getMessage().getChatId());
 					}
-				}, Flag.MESSAGE, Flag.REPLY, isReplyToBot(), isReplyToQuestion())
-				.build();
+				}, Flag.MESSAGE, Flag.REPLY, isReplyToBot(), isReplyToQuestion()).build();
 	}
 
 	private Predicate<Update> isReplyToMessage(String message) {
@@ -239,6 +231,3 @@ public class HolaBot extends AbilityBot {
 		return upd -> upd.getMessage().getReplyToMessage().getFrom().getUserName().equalsIgnoreCase(getBotUsername());
 	}
 }
-
-// .action(ctx -> silent.send("Hola desde el bot de votaciones para EGC grupo
-// 2!", ctx.chatId()))
