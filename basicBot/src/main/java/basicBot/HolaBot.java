@@ -132,18 +132,6 @@ public class HolaBot extends AbilityBot {
 				.build();
 	}
 
-//	public Ability votacionesAbiertas() {
-//		String texto = "Las votaciones abiertas son las siguientes:"
-//				+ "\r\n- Votaci\u00f3n de prueba 1, c\u00f3digo:abcd1234"
-//				+ "\r\n- Votaci\u00f3n de prueba 2, c\u00f3digo:abce1284"
-//				+ "\r\n- Votaci\u00f3n de prueba 3, c\u00f3digo:arsq5664"
-//				+ "\r\nSi desea ver todas las votaciones haga click en http://congreso.us.es/splc2017/";
-//		// TODO: url donde esten directamente las votaciones
-//		return Ability.builder().name("votacionesAbiertas")
-//				.info("devuelve las votaciones que hay disponibles para votar").locality(ALL).privacy(PUBLIC)
-//				.action(ctx -> silent.send(texto, ctx.chatId())).build();
-//	}
-
 	public Ability exit() {
 
 		String confirmation = "Esto cerrar\u00e1 la sesi\u00f3n actual. ¿Continuar?";
@@ -170,43 +158,31 @@ public class HolaBot extends AbilityBot {
 							silent.send(noClose, upd.getMessage().getChatId());
 						}
 					}
-				},
-
-						Flag.MESSAGE,
-
-						Flag.REPLY,
-
-						isReplyToBot(),
-
-						isReplyToMessage(confirmation))
-				// You can add more replies by calling .reply(...)
-				.build();
+				}, Flag.MESSAGE, Flag.REPLY, isReplyToBot(), isReplyToMessage(confirmation)).build();
 	}
 
+	public Ability votacionesAbiertas() {
+		String texto = VotarFunctionality.construyeTextoVotacionesDisponibles();
+		return Ability.builder().name("votacionesAbiertas").info("devuelve las votaciones que hay disponibles para votar").locality(ALL).privacy(PUBLIC)
+				.action(ctx -> silent.send(texto, ctx.chatId())).build();
+	}
+	
+	// Se quiere hacer: Pregunta1 -> Respuesta1 ; Pregunta2 -> Respuesta2 ...
 	public Ability votar() {
 		String textoVotar = VotarFunctionality.construyeTextoVotacionesDisponibles();
-		
-		return Ability.builder().name("votar").info("devuelve las votaciones que hay disponibles para votar y te permite votar").privacy(PUBLIC).locality(ALL).input(0)
+		return Ability.builder().name("votar").info("devuelve las votaciones que hay disponibles para votar y te permite votar").privacy(PUBLIC).locality(ALL)
 				.action(ctx -> silent.forceReply(textoVotar, ctx.chatId()))
 				.reply(upd -> {
-					silent.send("prueba", upd.getMessage().getChatId());
-//					List<String> preguntas = VotarFunctionality.preguntasDeVotacion(upd.getMessage().getText());
-//					
-//
-//					for(String pregunta : preguntas){
-//						silent.forceReply(pregunta, upd.getMessage().getChatId());
-//					}
-				},
-						
-						Flag.MESSAGE,
-						
-						Flag.REPLY,
-						
-						isReplyToBot(),
-						
-						isReplyToMessage(textoVotar))
-				
-				.build();
+					String idVotacion = upd.getMessage().getText();
+					if(VotarFunctionality.comprobarVotacion(idVotacion) == true) {
+						for(String s : VotarFunctionality.preguntasDeVotacion(idVotacion)){
+						silent.forceReply(s, upd.getMessage().getChatId());
+					
+						}
+					} else {
+						silent.send("pruebaNoEntra", upd.getMessage().getChatId());
+					}
+				}, Flag.MESSAGE, Flag.REPLY, isReplyToBot(), isReplyToMessage(textoVotar)).build();
 	}
 
 	private Predicate<Update> isReplyToMessage(String message) {

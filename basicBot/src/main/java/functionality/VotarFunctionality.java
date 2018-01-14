@@ -20,12 +20,20 @@ public class VotarFunctionality {
 		return res;
 	}
 
-	public static String construyeTextoVotacionesDisponibles() {
+	public static String textVotacionesAbiertas() {
 		String texto = "Las votaciones actuales del sistema son las siguientes:";
 		for (Votacion v : votacionesSistema()) {
 			texto += System.lineSeparator() + "Id: " + v.getId() + " - " + v.getTitulo();
 		}
-		texto += System.lineSeparator() + "Escribe la Id de la votacion en la que quieras participar.";
+		return texto;
+	}
+	
+	public static String construyeTextoVotacionesDisponibles() {
+		String texto = "Las votaciones actuales del sistema son las siguientes:";
+		for (Votacion v : votacionesSistema()) {
+			texto += "/r/n" + "Id: " + v.getId() + " - " + v.getTitulo();
+		}
+		texto += "/r/n" + "Escribe la Id de la votacion en la que quieras participar.";
 		return texto;
 	}
 
@@ -33,7 +41,7 @@ public class VotarFunctionality {
 	public static Boolean comprobarVotacion(String idVotacion) {
 		Boolean res = false;
 		for (Votacion v : votacionesSistema()) {
-			if (v.getId().equals(idVotacion)) {
+			if (v.getId().equals(Long.parseLong(idVotacion))) {
 				res = true;
 				break;
 			}
@@ -49,6 +57,7 @@ public class VotarFunctionality {
 			if (v.getId().equals(Long.parseLong(idVotacion))) {
 				votacion = v;
 				preguntas = votacion.getPreguntas();
+				break;
 			}
 		}
 		return preguntas;
