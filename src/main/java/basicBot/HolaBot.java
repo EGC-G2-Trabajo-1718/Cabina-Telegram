@@ -164,12 +164,20 @@ public class HolaBot extends AbilityBot {
 					if (usuarioLogueado == null || usuarioLogueado.isEmpty()) {
 						usuarioLogueado = new ArrayList<String>();
 					}
-					if (upd.getMessage().getText().equalsIgnoreCase("si")) {
-						nombreMap.remove(chatId);
-						silent.send(close, upd.getMessage().getChatId());
+					if(ExitFunctionality.comprobarUsuario(usuarioLogueado, nombre.toLowerCase()) == false){
+						silent.send(noLogin, upd.getMessage().getChatId());
 					} else {
-						silent.send(noClose, upd.getMessage().getChatId());
-					}
+						if (upd.getMessage().getText().equalsIgnoreCase("si") && ExitFunctionality.comprobarUsuario(usuarioLogueado, nombre.toLowerCase())) {
+							nombreMap.remove(chatId);
+							ExitFunctionality.exit(usuarioLogueado, nombre.toLowerCase());
+							silent.send(close, upd.getMessage().getChatId());
+						} else {
+							silent.send(noClose, upd.getMessage().getChatId());
+						}
+					}	
+					
+					
+					
 				}, Flag.MESSAGE, Flag.REPLY, isReplyToBot(), isReplyToMessage(confirmation)).build();
 	}
 
